@@ -1,199 +1,225 @@
 <!DOCTYPE html>
 <html lang="ph">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <style>
-        body {
-            background: linear-gradient(135deg, #f0f4f8, #d9e4f5);
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            color: #2d3436;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-        /* Pulse animation for UPDATE */
-        @keyframes pulse {
-            0% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-            50% { transform: scale(1.05); box-shadow: 0 8px 20px rgba(0,0,0,0.3); }
-            100% { transform: scale(1); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-        }
+<style>
+body{
+    background: radial-gradient(circle at top, #eef2ff, #dbeafe, #e0f2fe);
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    margin:0;
+    padding:20px;
+    color:#1f2937;
+}
 
-        .update-banner {
-            background: linear-gradient(135deg, #d63031, #8b0000);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 50px;
-            font-weight: bold;
-            display: inline-block;
-            margin-bottom: 15px;
-            animation: pulse 2s infinite;
-            letter-spacing: 1px;
-            border: 2px solid #fff;
-        }
+/* ================= UPDATE EFFECTS ================= */
+@keyframes glow {
+    0% { box-shadow: 0 0 10px rgba(255,0,0,.4); }
+    50% { box-shadow: 0 0 25px rgba(255,0,0,.9); }
+    100% { box-shadow: 0 0 10px rgba(255,0,0,.4); }
+}
 
-        .last-updated {
-            font-size: 12px;
-            color: #636e72;
-            margin-bottom: 25px;
-            text-transform: uppercase;
-            font-weight: bold;
-        }
+@keyframes float {
+    0%,100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+}
 
-        .main-title {
-            background: linear-gradient(135deg, #0984e3, #6c5ce7);
-            color: white;
-            font-size: 32px;
-            width: 95%;
-            max-width: 500px;
-            padding: 25px 15px;
-            border-radius: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            margin-bottom: 30px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
+.update-banner{
+    background: linear-gradient(135deg,#ff0000,#b91c1c,#7f1d1d);
+    color:#fff;
+    padding:14px 30px;
+    border-radius:999px;
+    font-weight:900;
+    letter-spacing:2px;
+    animation: glow 2s infinite;
+    border:3px solid #fff;
+    margin-bottom:10px;
+}
 
-        .subtitle {
-            font-size: 14px;
-            letter-spacing: 1px;
-            color: #dfe6e9;
-            margin-top: 10px;
-            font-weight: 400;
-        }
+.last-updated{
+    font-size:12px;
+    font-weight:700;
+    color:#374151;
+    margin-bottom:28px;
+    text-transform:uppercase;
+}
 
-        .quiz-container {
-            width: 100%;
-            max-width: 400px;
-        }
+/* ================= TITLE ================= */
+.main-title{
+    background: linear-gradient(135deg,#2563eb,#4f46e5,#7c3aed);
+    color:white;
+    font-size:34px;
+    padding:28px 18px;
+    width:95%;
+    max-width:520px;
+    border-radius:28px;
+    box-shadow:0 20px 40px rgba(0,0,0,.25);
+    font-weight:900;
+    letter-spacing:1px;
+    text-transform:uppercase;
+}
 
-        .quiz-button {
-            position: relative;
-            color: white;
-            font-size: 20px;
-            width: 100%;
-            height: 80px;
-            border: none;
-            border-radius: 18px;
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
-            cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            margin-bottom: 20px;
-            font-weight: 700;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-decoration: none;
-        }
+.subtitle{
+    margin-top:10px;
+    font-size:15px;
+    font-weight:500;
+    color:#e0e7ff;
+}
 
-        .quiz-button:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.2);
-            filter: brightness(1.1);
-        }
+/* ================= QUIZ ================= */
+.quiz-container{
+    margin-top:35px;
+    width:100%;
+    max-width:420px;
+}
 
-        /* NEW BADGE */
-        .badge-new {
-            position: absolute;
-            top: -10px;
-            right: -10px;
-            background: #ff7675;
-            color: white;
-            font-size: 12px;
-            padding: 5px 12px;
-            border-radius: 10px;
-            border: 2px solid white;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-        }
+.quiz-button{
+    position:relative;
+    width:100%;
+    height:85px;
+    border:none;
+    border-radius:22px;
+    font-size:21px;
+    font-weight:800;
+    color:white;
+    cursor:pointer;
+    margin-bottom:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    transition:.35s ease;
+    animation: float 4s ease-in-out infinite;
+}
 
-        /* Button Colors */
-        .btn-new { background: linear-gradient(135deg, #6c5ce7, #a29bfe); border: 2px solid #ffffff44; }
-        .btn-practice { background: linear-gradient(135deg, #2d3436, #636e72); opacity: 0.9; }
-        
-        /* Variations */
-        .btn-1 { background: linear-gradient(135deg, #00b894, #55efc4); }
-        .btn-2 { background: linear-gradient(135deg, #e17055, #fab1a0); }
-        .btn-3 { background: linear-gradient(135deg, #0984e3, #74b9ff); }
-        .btn-4 { background: linear-gradient(135deg, #fdcb6e, #ffeaa7); color: #2d3436 !important; }
+.quiz-button:hover{
+    transform: scale(1.04);
+    filter: brightness(1.15);
+}
 
-        .quote-box {
-            margin-top: 40px;
-            padding: 25px;
-            background: white;
-            border-radius: 20px;
-            max-width: 400px;
-            border-bottom: 6px solid #6c5ce7;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
-        }
+/* BADGES */
+.badge-new{
+    position:absolute;
+    top:-12px;
+    right:-12px;
+    background:#facc15;
+    color:#000;
+    font-size:12px;
+    font-weight:900;
+    padding:6px 14px;
+    border-radius:12px;
+    border:2px solid white;
+}
 
-        .good-vibes {
-            color: #2d3436;
-            font-style: italic;
-            font-size: 18px;
-            line-height: 1.5;
-            margin: 0;
-        }
+.badge-update{
+    position:absolute;
+    bottom:-10px;
+    left:50%;
+    transform:translateX(-50%);
+    background:#22c55e;
+    color:#022c22;
+    font-size:11px;
+    font-weight:800;
+    padding:4px 12px;
+    border-radius:10px;
+}
 
-        a { text-decoration: none; display: block; }
-    </style>
+/* COLORS */
+.btn-new{ background: linear-gradient(135deg,#7c3aed,#a78bfa); }
+.btn-1{ background: linear-gradient(135deg,#10b981,#6ee7b7); }
+.btn-2{ background: linear-gradient(135deg,#f97316,#fdba74); }
+.btn-3{ background: linear-gradient(135deg,#0ea5e9,#7dd3fc); }
+.btn-4{ background: linear-gradient(135deg,#facc15,#fde68a); color:#1f2937!important; }
+
+/* ================= QUOTE ================= */
+.quote-box{
+    margin-top:45px;
+    padding:30px;
+    background:white;
+    border-radius:26px;
+    max-width:420px;
+    box-shadow:0 15px 30px rgba(0,0,0,.1);
+    border-left:8px solid #4f46e5;
+}
+
+.good-vibes{
+    font-size:18px;
+    font-style:italic;
+    line-height:1.6;
+    margin:0;
+}
+
+a{ text-decoration:none; }
+</style>
 </head>
+
 <body>
-
 <center>
-    <div class="update-banner">✨ BAGONG UPDATE 2026 ✨</div>
-    <div class="last-updated">In-update noong: Feb 4, 2026</div>
 
-    <div class="main-title">
-        POP QUIZ HUB
-        <div class="subtitle">Mula School Champion patungong Division! 🚀</div>
-    </div>
+<div class="update-banner">🚨 MAJOR UPDATE 2026 🚨</div>
+<div class="last-updated">Updated: February 4, 2026</div>
 
-    <div class="quiz-container">
-        <a href="NFOT 2026 SHAPE 1.html">
-            <button class="quiz-button btn-new">
-                <span class="badge-new">NEW</span>
-                🔥 NFOT SHAPE 1
-            </button>
-        </a>
-        
-        <a href="NFOT 2026 NMS and YAFS.html">
-            <button class="quiz-button btn-new">
-                <span class="badge-new">NEW</span>
-                🌱 NMS & YAFS
-            </button>
-        </a>
+<div class="main-title">
+    POP QUIZ HUB
+    <div class="subtitle">School Champion ➜ Division Contender 🚀</div>
+</div>
 
-        <hr style="border: 0; height: 1px; background: #ccc; margin: 30px 0;">
+<div class="quiz-container">
 
-        <a href="Final Round 1.html">
-            <button class="quiz-button btn-1">⭐ Practice Quiz 1</button>
-        </a>
+<a href="NFOT 2026 SHAPE 1.html">
+<button class="quiz-button btn-new">
+    <span class="badge-new">NEW</span>
+    <span class="badge-update">UPDATED</span>
+    🔥 NFOT SHAPE 1
+</button>
+</a>
 
-        <a href="School Level 2 Pop Quiz 2026 - 1.html">
-            <button class="quiz-button btn-2">💎 Practice Quiz 2</button>
-        </a>
+<a href="NFOT 2026 NMS and YAFS.html">
+<button class="quiz-button btn-new">
+    <span class="badge-new">NEW</span>
+    <span class="badge-update">UPDATED</span>
+    🌱 NMS & YAFS
+</button>
+</a>
 
-        <a href="School Level Pop Quiz 2026 - 1.html">
-            <button class="quiz-button btn-3">🌈 Practice Quiz 3</button>
-        </a>
+<a href="NFOT 2026 Handbook.html">
+<button class="quiz-button btn-new">
+    <span class="badge-new">NEW</span>
+    📘 Demographic Concepts Handbook
+</button>
+</a>
 
-        <a href="School Level Pop Quiz 2026 - 2.html">
-            <button class="quiz-button btn-4">🏆 Practice Quiz 4</button>
-        </a>
-    </div>
+<hr style="margin:35px 0; border:none; height:2px; background:linear-gradient(to right,transparent,#9ca3af,transparent);">
 
-    <div class="quote-box">
-        <p class="good-vibes">
-            “Hindi ka na lang sumasali — <br>
-            <b>LUMALABAN ka na sa Division.</b>” 💪✨<br><br>
-            <span style="font-size: 14px; color: #636e72; font-style: normal;">
-                Focus. Disiplina. Tiwala sa sarili. <br>
-                <b>Kayang-kaya mo ‘to! 🥇</b>
-            </span>
-        </p>
-    </div>
+<a href="Final Round 1.html">
+<button class="quiz-button btn-1">⭐ Practice Quiz 1</button>
+</a>
+
+<a href="School Level 2 Pop Quiz 2026 - 1.html">
+<button class="quiz-button btn-2">💎 Practice Quiz 2</button>
+</a>
+
+<a href="School Level Pop Quiz 2026 - 1.html">
+<button class="quiz-button btn-3">🌈 Practice Quiz 3</button>
+</a>
+
+<a href="School Level Pop Quiz 2026 - 2.html">
+<button class="quiz-button btn-4">🏆 Practice Quiz 4</button>
+</a>
+
+</div>
+
+<div class="quote-box">
+<p class="good-vibes">
+“HINDI KA NA LANG SUMASALI —<br>
+<b>LUMALABAN KA NA SA DIVISION.</b>” 💪✨<br><br>
+<span style="font-size:14px; font-style:normal; color:#374151;">
+Focus. Disiplina. Paniniwala sa sarili.<br>
+<b>Division-ready ka na. 🥇</b>
+</span>
+</p>
+</div>
+
 </center>
-
 </body>
 </html>
