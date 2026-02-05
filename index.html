@@ -14,19 +14,42 @@ body{
 }
 
 /* ================= UPDATE EFFECTS ================= */
+
 @keyframes glow {
     0% { box-shadow: 0 0 10px rgba(255,0,0,.4); }
-    50% { box-shadow: 0 0 25px rgba(255,0,0,.9); }
+    50% { box-shadow: 0 0 30px rgba(255,0,0,1); }
     100% { box-shadow: 0 0 10px rgba(255,0,0,.4); }
 }
 
-@keyframes float {
-    0%,100% { transform: translateY(0); }
-    50% { transform: translateY(-6px); }
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.06); }
+    100% { transform: scale(1); }
 }
 
+@keyframes shake {
+    0%,100%{ transform:translateX(0); }
+    25%{ transform:translateX(-2px); }
+    75%{ transform:translateX(2px); }
+}
+
+/* ================= ALERT ================= */
+
+.update-alert{
+    background:rgba(239,68,68,.95);
+    color:white;
+    padding:16px;
+    border-radius:18px;
+    font-weight:900;
+    text-align:center;
+    margin-bottom:20px;
+    animation: glow 2s infinite, shake .5s infinite;
+}
+
+/* ================= UPDATE BANNER ================= */
+
 .update-banner{
-    background: linear-gradient(135deg,#ff0000,#b91c1c,#7f1d1d);
+    background: linear-gradient(135deg,#dc2626,#991b1b);
     color:#fff;
     padding:14px 30px;
     border-radius:999px;
@@ -34,7 +57,7 @@ body{
     letter-spacing:2px;
     animation: glow 2s infinite;
     border:3px solid #fff;
-    margin-bottom:10px;
+    margin-bottom:6px;
 }
 
 .last-updated{
@@ -46,6 +69,7 @@ body{
 }
 
 /* ================= TITLE ================= */
+
 .main-title{
     background: linear-gradient(135deg,#2563eb,#4f46e5,#7c3aed);
     color:white;
@@ -68,6 +92,7 @@ body{
 }
 
 /* ================= QUIZ ================= */
+
 .quiz-container{
     margin-top:35px;
     width:100%;
@@ -89,15 +114,22 @@ body{
     align-items:center;
     justify-content:center;
     transition:.35s ease;
-    animation: float 4s ease-in-out infinite;
+}
+
+/* Highlight NEW */
+
+.quiz-button.new{
+    animation: pulse 2s infinite;
+    box-shadow:0 0 25px rgba(34,197,94,.8);
 }
 
 .quiz-button:hover{
-    transform: scale(1.04);
-    filter: brightness(1.15);
+    transform: scale(1.05);
+    filter: brightness(1.2);
 }
 
 /* BADGES */
+
 .badge-new{
     position:absolute;
     top:-12px;
@@ -125,6 +157,7 @@ body{
 }
 
 /* COLORS */
+
 .btn-new{ background: linear-gradient(135deg,#7c3aed,#a78bfa); }
 .btn-1{ background: linear-gradient(135deg,#10b981,#6ee7b7); }
 .btn-2{ background: linear-gradient(135deg,#f97316,#fdba74); }
@@ -132,6 +165,7 @@ body{
 .btn-4{ background: linear-gradient(135deg,#facc15,#fde68a); color:#1f2937!important; }
 
 /* ================= QUOTE ================= */
+
 .quote-box{
     margin-top:45px;
     padding:30px;
@@ -156,36 +190,48 @@ a{ text-decoration:none; }
 <body>
 <center>
 
+<!-- ALERT -->
+<div class="update-alert">
+⚠️ MAY BAGONG NILALAMAN • UPDATED FOR 2026 • CHECK NOW!
+</div>
+
 <div class="update-banner">🚨 MAJOR UPDATE 2026 🚨</div>
-<div class="last-updated">Updated: February 4, 2026</div>
+<div class="last-updated">Updated: February 5, 2026</div>
 
 <div class="main-title">
-    POP QUIZ HUB
-    <div class="subtitle">School Champion ➜ Division Contender 🚀</div>
+POP QUIZ HUB
+<div class="subtitle">School Champion ➜ Division Contender 🚀</div>
 </div>
 
 <div class="quiz-container">
 
 <a href="NFOT 2026 SHAPE 1.html">
-<button class="quiz-button btn-new">
-    <span class="badge-new">NEW</span>
-    <span class="badge-update">UPDATED</span>
-    🔥 NFOT SHAPE 1
+<button class="quiz-button btn-new new">
+<span class="badge-new">NEW</span>
+<span class="badge-update">UPDATED</span>
+🔥 NFOT SHAPE 1
 </button>
 </a>
 
 <a href="NFOT 2026 NMS and YAFS.html">
-<button class="quiz-button btn-new">
-    <span class="badge-new">NEW</span>
-    <span class="badge-update">UPDATED</span>
-    🌱 NMS & YAFS
+<button class="quiz-button btn-new new">
+<span class="badge-new">NEW</span>
+<span class="badge-update">UPDATED</span>
+🌱 NMS & YAFS
 </button>
 </a>
 
 <a href="NFOT 2026 Handbook.html">
-<button class="quiz-button btn-new">
-    <span class="badge-new">NEW</span>
-    📘 Demographic Concepts Handbook
+<button class="quiz-button btn-new new">
+<span class="badge-new">NEW</span>
+📘 Demographic Concepts Handbook
+</button>
+</a>
+
+<a href="NFOT 2026 Ageing.html">
+<button class="quiz-button btn-new new">
+<span class="badge-new">NEW</span>
+📘 Ageing and Health
 </button>
 </a>
 
