@@ -177,6 +177,17 @@ body{
 
 a{ text-decoration:none; }
 </style>
+
+<!-- Right-side navigation -->
+  <div style="margin-left:auto; display:flex; gap:12px; align-items:center;">
+    <!-- Dashboard button -->
+    <a href="dashboard.html"
+       style="text-decoration:none;padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;background:#f1f5f9;color:#1f2937;">
+       Dashboard
+    </a>
+
+    
+  </div>
 </head>
 
 <body>
@@ -277,6 +288,34 @@ Kalmado ang isip. Klaro ang sagot.<br>
 </span>
 </p>
 </div>
+
+<script>
+    // Simple localStorage progress tracking (offline-capable)
+    const ids = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
+    function pct(level){
+      const range = level===1?ids.slice(0,3):level===2?ids.slice(3,6):ids.slice(6,9);
+      const done = range.filter(id=>localStorage.getItem('done_'+id)==='1').length;
+      return Math.round(done/range.length*100);
+    }
+    function paint(){
+      document.getElementById('bar1').style.width = pct(1)+'%';
+      document.getElementById('bar2').style.width = pct(2)+'%';
+      document.getElementById('bar3').style.width = pct(3)+'%';
+    }
+    function start(url,id){
+      // Request fullscreen (optional) to help focus
+      if (document.documentElement.requestFullscreen) {
+        document.documentElement.requestFullscreen();
+      }
+      const t = 20*60; // default 20 minutes
+      localStorage.setItem('timer_'+id, t);
+      window.location.href = url;
+    }
+    function preview(url){
+      window.open(url,'_blank');
+    }
+    paint();
+  </script>
 
 </center>
 </body>
