@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ageing and Health unique 100-Item Reviewer</title>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; padding: 20px; color: #333; }
+        .container { max-width: 950px; margin: auto; background: white; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        h1 { color: #2c3e50; text-align: center; border-bottom: 4px solid #16a085; padding-bottom: 10px; }
+        .section-header { background: #16a085; color: white; padding: 10px; margin: 25px 0 15px 0; border-radius: 5px; font-weight: bold; }
+        .q-block { margin-bottom: 20px; padding: 15px; border-bottom: 1px solid #eee; }
+        .options { list-style: none; padding: 0; }
+        .options li { margin: 8px 0; }
+        button { background: #16a085; color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; width: 100%; font-weight: bold; margin-top: 20px; }
+        #result-display { display: none; margin-top: 30px; padding: 20px; text-align: center; font-size: 24px; border-radius: 10px; }
+        .feedback { color: #e74c3c; font-weight: bold; display: none; margin-top: 10px; font-size: 14px; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Ageing and Health in the Philippines (Full Report) Reviewer</h1>
+    <p style="text-align: center; font-style: italic;">100 Unique Items: 50 Multiple Choice | 50 True or False</p>
+
+    <div class="section-header">PART I: 50 MULTIPLE CHOICE (UNIQUE)</div>
+    <div id="mc-area"></div>
+
+    <div class="section-header">PART II: 50 TRUE OR FALSE (UNIQUE)</div>
+    <div id="tf-area"></div>
+
+    <button onclick="calculateScore()">Submit Answers</button>
+    <div id="result-display"></div>
+</div>
+
+<script>
+const mcData = [
+    { q: "What is the primary source of data for the Ageing and Health in the Philippines report?", a: "2018 Longitudinal Study of Ageing and Health in the Philippines (LSAHP)", o: ["2015 Census", "2018 Longitudinal Study of Ageing and Health in the Philippines (LSAHP)", "2017 NDHS", "FHSIS 2018"] },
+    { q: "Which region in the Philippines has the highest number of older persons based on the report?", a: "CALABARZON", o: ["NCR", "CALABARZON", "Central Luzon", "Ilocos Region"] },
+    { q: "What is the official age used in the report to define 'older persons' in the Philippines?", a: "60 and older", o: ["55 and older", "60 and older", "65 and older", "70 and older"] },
+    { q: "Which of the sum of ADL stands for the most basic tasks? ", a: "Activities of Daily Living", o: ["Actual Daily Living", "Activities of Daily Living", "Adult Daily Living", "Associated Daily Life"] },
+    { q: "What is the leading chronic non-communicable disease reported by Filipino older persons?", a: "Hypertension", o: ["Diabetes", "Hypertension", "Arthritis", "Heart Disease"] },
+    { q: "Who are the primary caregivers of older persons in the Philippines?", a: "Children", o: ["Spouses", "Children", "Siblings", "Professional Nurses"] },
+    { q: "Which law mandates the social pension for indigent senior citizens?", a: "RA 9994", o: ["RA 7432", "RA 9257", "RA 9994", "RA 10645"] },
+    { q: "The 'Feminization of Ageing' refers to:", a: "The higher proportion of women among the older population", o: ["Women retiring earlier", "The higher proportion of women among the older population", "The role of women as caregivers", "The increase in maternal health"] },
+    { q: "Which sensory impairment has the highest prevalence among older Filipinos?", a: "Vision impairment", o: ["Hearing loss", "Vision impairment", "Loss of taste", "Loss of smell"] },
+    { q: "What is the 'Geriatric Depression Scale' (GDS) used to measure?", a: "Depressive symptoms", o: ["Cognitive decline", "Physical mobility", "Depressive symptoms", "Social engagement"] },
+    { q: "RA 10645 is a law that provides automatic what for all senior citizens?", a: "PhilHealth coverage", o: ["Social Pension", "PhilHealth coverage", "Death benefits", "Free transportation"] },
+    { q: "What does IADL stand for?", a: "Instrumental Activities of Daily Living", o: ["Internal Activities of Daily Living", "Instrumental Activities of Daily Living", "Integrated Adult Daily Living", "Independent Activities of Daily Living"] },
+    { q: "Which condition is characterized by the loss of muscle mass and strength due to ageing?", a: "Sarcopenia", o: ["Osteoporosis", "Sarcopenia", "Arthritis", "Atrophy"] },
+    { q: "The report indicates that most older Filipinos prefer to stay in:", a: "Their own homes", o: ["Nursing homes", "Their own homes", "Hospital wards", "Community centers"] },
+    { q: "What is the main reason for older persons not seeking medical treatment according to the study?", a: "Financial constraints", o: ["Lack of transport", "Financial constraints", "Fear of doctors", "Distance"] },
+    { q: "Which agency is primarily responsible for the Social Pension program?", a: "DSWD", o: ["DOH", "DSWD", "POPCOM", "NEDA"] },
+    { q: "What is the common term for the difference between life expectancy and healthy life expectancy?", a: "Years lived with disability", o: ["Mortality gap", "Years lived with disability", "Ageing index", "Survival rate"] },
+    { q: "Which region has the lowest population of older persons?", a: "ARMM/BARMM", o: ["CAR", "CARAGA", "ARMM/BARMM", "Davao"] },
+    { q: "The study shows that older women are more likely to be ____ than older men.", a: "Widowed", o: ["Married", "Widowed", "Employed", "Healthy"] },
+    { q: "Which tool is used to screen for cognitive impairment in the report?", a: "Mini-Mental State Examination (MMSE)", o: ["GDS", "ADL", "Mini-Mental State Examination (MMSE)", "KATZ Index"] },
+    { q: "What is the current monthly amount of the Social Pension for indigent seniors (initial implementation)?", a: "500 pesos", o: ["200 pesos", "500 pesos", "1,000 pesos", "1,500 pesos"] },
+    { q: "Which type of dwelling is most common for older Filipinos?", a: "Single house", o: ["Single house", "Apartment", "Condominium", "Duplex"] },
+    { q: "In terms of labor force, older ____ are more likely to be still working.", a: "Men", o: ["Men", "Women"] },
+    { q: "What is the term for the number of persons 65+ per 100 persons 15-64?", a: "Old-age dependency ratio", o: ["Ageing index", "Total dependency ratio", "Old-age dependency ratio", "Support ratio"] },
+    { q: "Which condition is noted for causing 'bone thinning' among the elderly?", a: "Osteoporosis", o: ["Arthritis", "Osteoporosis", "Sarcopenia", "Rheumatism"] },
+    { q: "Centenarians Act (RA 10868) honors those who reach what age?", a: "100", o: ["90", "95", "100", "110"] },
+    { q: "The majority of older Filipinos' income comes from:", a: "Earnings from work", o: ["Social Pension", "Remittances", "Earnings from work", "SSS/GSIS"] },
+    { q: "Which survey method was used for LSAHP?", a: "Computer-assisted personal interviews (CAPI)", o: ["Paper and pencil", "Computer-assisted personal interviews (CAPI)", "Telephone survey", "Online forms"] },
+    { q: "What refers to the ability to walk 200 to 300 meters without resting?", a: "Mobility", o: ["Agility", "Mobility", "Stamina", "Endurance"] },
+    { q: "Which dental issue is highly prevalent among older Filipinos?", a: "Edentulism", o: ["Cavities", "Edentulism", "Gingivitis", "Plaque"] },
+    { q: "The study defines 'Young-Old' as those aged:", a: "60-69", o: ["60-65", "60-69", "60-74", "65-70"] },
+    { q: "The study defines 'Oldest-Old' as those aged:", a: "80 and older", o: ["75 and older", "80 and older", "85 and older", "90 and older"] },
+    { q: "Older persons with 'Indigent' status are those who are:", a: "Frail, sickly, or with disability and no permanent income", o: ["Retired", "Unemployed", "Frail, sickly, or with disability and no permanent income", "Living alone"] },
+    { q: "What is the 'Life Expectancy' of Filipinos in 2020 (estimate)?", a: "71.4 years", o: ["65.2 years", "68.9 years", "71.4 years", "75.0 years"] },
+    { q: "What is the primary objective of the LSAHP?", a: "To provide baseline data on ageing and health", o: ["To distribute pensions", "To build nursing homes", "To provide baseline data on ageing and health", "To census the whole country"] },
+    { q: "Which organization edited the report alongside UPPI?", a: "ERIA", o: ["WHO", "ERIA", "UNFPA", "ADB"] },
+    { q: "What refers to a person's own assessment of their health status?", a: "Self-rated health", o: ["Objective health", "Self-rated health", "Clinical health", "Physical fitness"] },
+    { q: "The report found that ____ are more likely to have higher education among the elderly.", a: "Men", o: ["Men", "Women"] },
+    { q: "Most older Filipinos use what as their main source of water?", a: "Piped water", o: ["Piped water", "Well", "Spring", "Bottled"] },
+    { q: "What is the most common form of physical activity for older Filipinos?", a: "Walking", o: ["Swimming", "Jogging", "Walking", "Biking"] },
+    { q: "The 'Old-age support ratio' is the inverse of the old-age dependency ratio.", a: "True", o: ["True", "False"] },
+    { q: "Which factor most influences the 'Active Ageing' framework?", a: "Participation, Health, and Security", o: ["Wealth and Status", "Participation, Health, and Security", "Age and Gender", "Diet and Exercise"] },
+    { q: "Which cognitive domain is tested by asking the older person to name the day of the week?", a: "Orientation", o: ["Memory", "Orientation", "Calculation", "Recall"] },
+    { q: "What is the term for being unable to perform basic functions like bathing or eating?", a: "Functional disability", o: ["Physical illness", "Functional disability", "Mental decline", "Sickness"] },
+    { q: "A 'proxy respondent' is used when:", a: "The older person is unable to answer due to health issues", o: ["The older person is busy", "The older person is unable to answer due to health issues", "The older person is sleeping", "The older person is illiterate"] },
+    { q: "What percentage of older Filipinos receive the Social Pension (based on indigent criteria)?", a: "Approximately 38%", o: ["10%", "25%", "Approximately 38%", "50%"] },
+    { q: "Older adults who live alone are called:", a: "One-person households", o: ["Single parents", "One-person households", "Isolated elderly", "Nuclear family"] },
+    { q: "RA 7432 is the original law for senior citizens enacted in:", a: "1992", o: ["1987", "1992", "2000", "2010"] },
+    { q: "PhilHealth 'Lifetime Members' are those who have paid at least ____ monthly contributions.", a: "120", o: ["60", "100", "120", "180"] },
+    { q: "What is the main theme of the report?", a: "Ageing and Health in the Philippines", o: ["Ageing and Wealth", "Ageing and Health in the Philippines", "Population Census", "History of Ageing"] }
+];
+
+const tfData = [
+    { q: "The LSAHP report is a longitudinal study, meaning it follows the same individuals over time.", a: "True" },
+    { q: "Older women in the Philippines have higher life expectancy than older men.", a: "True" },
+    { q: "The total population of the Philippines is getting younger over time.", a: "False" },
+    { q: "Hypertension is a communicable disease.", a: "False" },
+    { q: "All senior citizens are entitled to a 20% discount on medicines.", a: "True" },
+    { q: "The old-age dependency ratio is expected to decrease in the future.", a: "False" },
+    { q: "Functional disability is more common among the 'oldest-old' (80+).", a: "True" },
+    { q: "Most older Filipinos prefer to live in institutional care like nursing homes.", a: "False" },
+    { q: "Older men are more likely to live alone than older women.", a: "False" },
+    { q: "Cataract is a common cause of vision impairment among the elderly.", a: "True" },
+    { q: "The Social Pension is given to all Filipinos aged 60 and above regardless of income.", a: "False" },
+    { q: "Cognitive impairment is a normal part of ageing and cannot be prevented.", a: "False" },
+    { q: "RA 9994 expanded the benefits of senior citizens including VAT exemption.", a: "True" },
+    { q: "Older persons who are currently working are mostly in the agricultural sector.", a: "True" },
+    { q: "The majority of older Filipinos have high levels of health literacy.", a: "False" },
+    { q: "Hearing impairment prevalence increases with age.", a: "True" },
+    { q: "Older women report more chronic conditions than older men.", a: "True" },
+    { q: "Malnutrition is not a concern for the older population in the Philippines.", a: "False" },
+    { q: "PhilHealth coverage for seniors is free as per RA 10645.", a: "True" },
+    { q: "The age of 60 is the mandatory retirement age in all private sectors.", a: "False" },
+    { q: "Depression among the elderly is often underdiagnosed.", a: "True" },
+    { q: "Falls are a significant cause of injury among older persons.", a: "True" },
+    { q: "Remittances from abroad are a major source of financial support for many older Filipinos.", a: "True" },
+    { q: "Older men have higher rates of smoking and drinking compared to older women.", a: "True" },
+    { q: "Universal health coverage includes the elderly population.", a: "True" },
+    { q: "Activities of Daily Living (ADL) include tasks like bathing and dressing.", a: "True" },
+    { q: "Managing money is considered a basic ADL.", a: "False" },
+    { q: "The report shows that older persons in urban areas have better access to healthcare.", a: "True" },
+    { q: "Self-rated health usually declines as age increases.", a: "True" },
+    { q: "Cognitive health is not related to education level.", a: "False" },
+    { q: "Sarcopenia can be mitigated through proper nutrition and exercise.", a: "True" },
+    { q: "The Centenarians Act provides benefits only to those living in the Philippines.", a: "False" },
+    { q: "Older women are more likely to have vision problems than older men.", a: "True" },
+    { q: "Social engagement helps improve the mental health of older persons.", a: "True" },
+    { q: "The prevalence of diabetes among the elderly is decreasing.", a: "False" },
+    { q: "Dental check-ups are frequently sought by older Filipinos.", a: "False" },
+    { q: "Obesity is a risk factor for many non-communicable diseases in old age.", a: "True" },
+    { q: "Older adults are more susceptible to infectious diseases due to weakened immunity.", a: "True" },
+    { q: "Health insurance is the only factor determining healthcare access.", a: "False" },
+    { q: "Older persons contribute to the household through childcare.", a: "True" },
+    { q: "Urbanization has no impact on the living arrangements of older persons.", a: "False" },
+    { q: "The old-age dependency ratio measures the burden on the productive population.", a: "True" },
+    { q: "Most indigent seniors are aware of their rights under RA 9994.", a: "True" },
+    { q: "Geriatrics is the study of the biological process of ageing.", a: "False" },
+    { q: "A 'one-person household' means the senior citizen lives with a maid only.", a: "False" },
+    { q: "The report highlights the importance of 'Ageing in Place'.", a: "True" },
+    { q: "Physical therapy is a common medical need for stroke survivors.", a: "True" },
+    { q: "The majority of older Filipinos are satisfied with their lives.", a: "True" },
+    { q: "Older people are a homogeneous group with the same health needs.", a: "False" },
+    { q: "Long-term care systems are highly developed in the Philippines.", a: "False" }
+];
+
+function initQuiz() {
+    const mcArea = document.getElementById('mc-area');
+    mcData.forEach((item, i) => {
+        let optionsHtml = '';
+        item.o.forEach(opt => {
+            optionsHtml += `<li><label><input type="radio" name="mc${i}" value="${opt}"> ${opt}</label></li>`;
+        });
+        mcArea.innerHTML += `
+            <div class="q-block" id="mcblock${i}">
+                <p><strong>${i+1}. ${item.q}</strong></p>
+                <ul class="options">${optionsHtml}</ul>
+                <div class="feedback" id="mcfb${i}">Correct Answer: ${item.a}</div>
+            </div>`;
+    });
+
+    const tfArea = document.getElementById('tf-area');
+    tfData.forEach((item, i) => {
+        tfArea.innerHTML += `
+            <div class="q-block" id="tfblock${i}">
+                <p><strong>${i+51}. ${item.q}</strong></p>
+                <ul class="options">
+                    <li><label><input type="radio" name="tf${i}" value="True"> True</label></li>
+                    <li><label><input type="radio" name="tf${i}" value="False"> False</label></li>
+                </ul>
+                <div class="feedback" id="tffb${i}">Correct Answer: ${item.a}</div>
+            </div>`;
+    });
+}
+
+function calculateScore() {
+    let score = 0;
+    mcData.forEach((item, i) => {
+        const selected = document.querySelector(`input[name="mc${i}"]:checked`);
+        const block = document.getElementById(`mcblock${i}`);
+        const fb = document.getElementById(`mcfb${i}`);
+        if(selected && selected.value === item.a) {
+            score++;
+            block.style.background = "#d4efdf";
+            fb.style.display = "none";
+        } else {
+            block.style.background = "#f9ebea";
+            fb.style.display = "block";
+        }
+    });
+
+    tfData.forEach((item, i) => {
+        const selected = document.querySelector(`input[name="tf${i}"]:checked`);
+        const block = document.getElementById(`tfblock${i}`);
+        const fb = document.getElementById(`tffb${i}`);
+        if(selected && selected.value === item.a) {
+            score++;
+            block.style.background = "#d4efdf";
+            fb.style.display = "none";
+        } else {
+            block.style.background = "#f9ebea";
+            fb.style.display = "block";
+        }
+    });
+
+    const result = document.getElementById('result-display');
+    result.style.display = "block";
+    result.style.background = score >= 75 ? "#27ae60" : "#e67e22";
+    result.style.color = "white";
+    result.innerHTML = `Your Score: ${score} / 100`;
+    window.scrollTo(0,0);
+}
+
+initQuiz();
+</script>
+</body>
+</html>
