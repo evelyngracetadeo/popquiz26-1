@@ -6,90 +6,149 @@
 <title>POP QUIZ HUB</title>
 
 <style>
+/* ===== BODY & BACKGROUND ANIMATION ===== */
 body{
-  background: linear-gradient(180deg,#f0fdfa 0%,#ecfeff 45%,#ffffff 100%);
+  margin:0;
   font-family:'Segoe UI',Roboto,Arial,sans-serif;
-  margin:0;padding:20px;color:#064e3b;
+  color:#065f46;
+  min-height:100vh;
+  background: linear-gradient(270deg, #6EE7B7, #3B82F6, #FACC15, #F472B6);
+  background-size: 800% 800%;
+  animation: gradientBG 20s ease infinite;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  padding:20px;
+  transition: background 0.5s;
 }
+
+@keyframes gradientBG {
+  0% {background-position:0% 50%;}
+  50% {background-position:100% 50%;}
+  100% {background-position:0% 50%;}
+}
+
 a{text-decoration:none}
 
 /* ===== FOCUS BANNER ===== */
 .focus-banner{
-  background:linear-gradient(135deg,#34d399,#10b981);
+  background:linear-gradient(135deg,#06b6d4,#22c55e);
   color:#fff;
-  padding:14px;
-  border-radius:20px;
+  padding:16px 20px;
+  border-radius:25px;
   font-weight:800;
   text-align:center;
-  margin-bottom:22px;
+  margin-bottom:24px;
+  font-size:16px;
+  box-shadow:0 8px 20px rgba(0,0,0,.15);
+  animation: glow 2s infinite alternate;
+}
+@keyframes glow {
+  0%{box-shadow:0 0 8px rgba(255,255,255,0.6);}
+  100%{box-shadow:0 0 18px rgba(255,255,255,1);}
 }
 
-/* ===== TITLE ===== */
+/* ===== MAIN TITLE ===== */
 .main-title{
-  background:linear-gradient(135deg,#14b8a6,#22c55e,#84cc16);
+  background:linear-gradient(135deg,#14b8a6,#22c55e,#a3e635);
   color:white;
-  font-size:32px;
-  padding:28px 18px;
-  max-width:520px;
-  border-radius:30px;
-  box-shadow:0 18px 36px rgba(0,0,0,.15);
+  font-size:36px;
+  padding:30px 20px;
+  max-width:560px;
+  border-radius:35px;
+  box-shadow:0 20px 40px rgba(0,0,0,.12);
   font-weight:900;
   text-transform:uppercase;
+  margin:auto;
+  text-align:center;
 }
 .subtitle{
-  margin-top:8px;
-  font-size:14px;
-  font-weight:500;
+  margin-top:10px;
+  font-size:16px;
+  font-weight:600;
   color:#ecfeff;
 }
 
-/* ===== BUTTONS ===== */
-.quiz-container{margin-top:40px;max-width:480px}
+/* ===== QUIZ BUTTONS ===== */
+.quiz-container{
+  margin-top:40px;
+  max-width:520px;
+  width:100%;
+}
 .quiz-button{
-  width:100%;height:80px;border:none;
-  border-radius:26px;
+  width:100%;
+  height:80px;
+  border:none;
+  border-radius:28px;
   font-size:20px;font-weight:800;
-  color:white;cursor:pointer;
+  color:white;
+  cursor:pointer;
   margin-bottom:18px;
   display:flex;align-items:center;justify-content:center;
-  box-shadow:0 12px 26px rgba(0,0,0,.08);
-  transition:.3s ease;
+  box-shadow:0 14px 28px rgba(0,0,0,.08);
+  transition:0.3s ease, transform 0.2s ease;
+  position:relative;
 }
-.quiz-button:hover{transform:translateY(-3px) scale(1.03)}
+.quiz-button:hover{
+  transform:translateY(-4px) scale(1.05);
+  box-shadow:0 18px 32px rgba(0,0,0,.2);
+}
+.quiz-button::after{
+  content:"✨";
+  margin-left:8px;
+  opacity:0;
+  transition:0.3s;
+}
+.quiz-button:hover::after{
+  opacity:1;
+}
 
-.btn-a{background:linear-gradient(135deg,#22c55e,#86efac)}
-.btn-b{background:linear-gradient(135deg,#0ea5e9,#7dd3fc)}
-.btn-c{background:linear-gradient(135deg,#8b5cf6,#c4b5fd)}
+/* Gradient Variants */
+.btn-a{background:linear-gradient(135deg,#22c55e,#86efac);}
+.btn-b{background:linear-gradient(135deg,#0ea5e9,#7dd3fc);}
+.btn-c{background:linear-gradient(135deg,#8b5cf6,#c4b5fd);}
 .btn-d{background:linear-gradient(135deg,#f59e0b,#fde68a);color:#78350f}
 
-/* ===== QUOTE ===== */
+/* ===== DIVIDER ===== */
+hr{
+  margin:35px 0;
+  border:none;
+  height:2px;
+  background:linear-gradient(to right,transparent,#99f6e4,transparent);
+  border-radius:1px;
+}
+
+/* ===== QUOTE BOX ===== */
 .quote-box{
   margin-top:50px;
-  padding:32px;
-  background:linear-gradient(180deg,#ffffff,#f0fdfa);
-  border-radius:30px;
+  padding:36px;
+  background:linear-gradient(180deg,#ffffff,#e0f7fa);
+  border-radius:35px;
   box-shadow:0 20px 40px rgba(0,0,0,.08);
-  border-left:6px solid #34d399;
+  border-left:6px solid #22c55e;
+  max-width:520px;
+  margin:auto;
+  text-align:center;
 }
 .quote{
-  font-size:18px;font-style:italic;line-height:1.6;margin:0;
+  font-size:20px;font-style:italic;line-height:1.6;margin:0;
+  color:#065f46;
 }
 .small{
-  font-size:14px;font-style:normal;color:#065f46;
+  font-size:15px;font-style:normal;color:#064e3b;
 }
 </style>
 </head>
 
 <body>
-<center>
 
 <div class="focus-banner">
-✨ Focus Mode • One Quiz at a Time • You’re Doing Great
+✨ Focus Mode • One Quiz at a Time • You’re Doing Great 🌟
 </div>
 
 <div class="main-title">
 POP QUIZ HUB
-<div class="subtitle">Calm Mind • Clear Answers • Confident You 🌱</div>
+<div class="subtitle">Calm Mind • Clear Answers • Confident You 🌱🤖</div>
 </div>
 
 <div class="quiz-container">
@@ -104,8 +163,9 @@ POP QUIZ HUB
 <a href="NFOT 2026 Parent Teen, etc.html"><button class="quiz-button btn-c">👨‍👩‍👧 Parent-Teen & More</button></a>
 <a href="NFOT 2026 Combi 1.html"><button class="quiz-button btn-d">🌍 Combi 1</button></a>
 <a href="NFOT 2026 Combi 2.html"><button class="quiz-button btn-a">🌍 Combi 2</button></a>
+<a href="AI1.html"><button class="quiz-button btn-a">🤖 AI 1</button></a>
 
-<hr style="margin:30px 0;border:none;height:2px;background:linear-gradient(to right,transparent,#99f6e4,transparent);">
+<hr>
 
 <!-- School-Level / Final Round -->
 <a href="Final Round 1.html"><button class="quiz-button btn-b">🎯 Final Round 1</button></a>
@@ -125,6 +185,5 @@ Kalmado ang isip. Klaro ang sagot.<br>
 </p>
 </div>
 
-</center>
 </body>
 </html>
