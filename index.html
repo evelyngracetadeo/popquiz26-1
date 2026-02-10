@@ -3,326 +3,127 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>POP QUIZ HUB</title>
 
 <style>
 body{
-    background: radial-gradient(circle at top, #ecfeff, #e0f2f1, #f0fdfa);
-    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
-    margin:0;
-    padding:20px;
-    color:#064e3b;
+  background: linear-gradient(180deg,#f0fdfa 0%,#ecfeff 45%,#ffffff 100%);
+  font-family:'Segoe UI',Roboto,Arial,sans-serif;
+  margin:0;padding:20px;color:#064e3b;
+}
+a{text-decoration:none}
+
+/* ===== FOCUS BANNER ===== */
+.focus-banner{
+  background:linear-gradient(135deg,#34d399,#10b981);
+  color:#fff;
+  padding:14px;
+  border-radius:20px;
+  font-weight:800;
+  text-align:center;
+  margin-bottom:22px;
 }
 
-/* ================= EFFECTS ================= */
-
-@keyframes glow {
-    0% { box-shadow: 0 0 8px rgba(16,185,129,.4); }
-    50% { box-shadow: 0 0 22px rgba(16,185,129,.9); }
-    100% { box-shadow: 0 0 8px rgba(16,185,129,.4); }
-}
-
-@keyframes pulse {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-/* ================= ALERT ================= */
-
-.update-alert{
-    background:linear-gradient(135deg,#059669,#047857);
-    color:white;
-    padding:16px;
-    border-radius:18px;
-    font-weight:900;
-    text-align:center;
-    margin-bottom:20px;
-    animation: glow 2.5s infinite;
-}
-
-/* ================= BANNER ================= */
-
-.update-banner{
-    background: linear-gradient(135deg,#0ea5e9,#0369a1);
-    color:#fff;
-    padding:14px 30px;
-    border-radius:999px;
-    font-weight:900;
-    letter-spacing:2px;
-    animation: glow 2.5s infinite;
-    border:3px solid #ecfeff;
-    margin-bottom:6px;
-}
-
-.last-updated{
-    font-size:12px;
-    font-weight:700;
-    color:#065f46;
-    margin-bottom:28px;
-    text-transform:uppercase;
-}
-
-/* ================= TITLE ================= */
-
+/* ===== TITLE ===== */
 .main-title{
-    background: linear-gradient(135deg,#14b8a6,#22c55e,#84cc16);
-    color:white;
-    font-size:34px;
-    padding:28px 18px;
-    width:95%;
-    max-width:520px;
-    border-radius:28px;
-    box-shadow:0 18px 36px rgba(0,0,0,.2);
-    font-weight:900;
-    letter-spacing:1px;
-    text-transform:uppercase;
+  background:linear-gradient(135deg,#14b8a6,#22c55e,#84cc16);
+  color:white;
+  font-size:32px;
+  padding:28px 18px;
+  max-width:520px;
+  border-radius:30px;
+  box-shadow:0 18px 36px rgba(0,0,0,.15);
+  font-weight:900;
+  text-transform:uppercase;
 }
-
 .subtitle{
-    margin-top:10px;
-    font-size:15px;
-    font-weight:500;
-    color:#ecfeff;
+  margin-top:8px;
+  font-size:14px;
+  font-weight:500;
+  color:#ecfeff;
 }
 
-/* ================= QUIZ ================= */
-
-.quiz-container{
-    margin-top:35px;
-    width:100%;
-    max-width:420px;
-}
-
+/* ===== BUTTONS ===== */
+.quiz-container{margin-top:40px;max-width:480px}
 .quiz-button{
-    position:relative;
-    width:100%;
-    height:85px;
-    border:none;
-    border-radius:22px;
-    font-size:21px;
-    font-weight:800;
-    color:white;
-    cursor:pointer;
-    margin-bottom:22px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    transition:.35s ease;
+  width:100%;height:80px;border:none;
+  border-radius:26px;
+  font-size:20px;font-weight:800;
+  color:white;cursor:pointer;
+  margin-bottom:18px;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 26px rgba(0,0,0,.08);
+  transition:.3s ease;
 }
+.quiz-button:hover{transform:translateY(-3px) scale(1.03)}
 
-.quiz-button.new{
-    animation: pulse 2s infinite;
-    box-shadow:0 0 20px rgba(34,197,94,.7);
-}
+.btn-a{background:linear-gradient(135deg,#22c55e,#86efac)}
+.btn-b{background:linear-gradient(135deg,#0ea5e9,#7dd3fc)}
+.btn-c{background:linear-gradient(135deg,#8b5cf6,#c4b5fd)}
+.btn-d{background:linear-gradient(135deg,#f59e0b,#fde68a);color:#78350f}
 
-.quiz-button:hover{
-    transform: scale(1.05);
-    filter: brightness(1.15);
-}
-
-/* ================= BADGES ================= */
-
-.badge-new{
-    position:absolute;
-    top:-12px;
-    right:-12px;
-    background:#fde047;
-    color:#713f12;
-    font-size:12px;
-    font-weight:900;
-    padding:6px 14px;
-    border-radius:12px;
-    border:2px solid white;
-}
-
-.badge-update{
-    position:absolute;
-    bottom:-10px;
-    left:50%;
-    transform:translateX(-50%);
-    background:#86efac;
-    color:#064e3b;
-    font-size:11px;
-    font-weight:800;
-    padding:4px 12px;
-    border-radius:10px;
-}
-
-/* ================= COLORS ================= */
-
-.btn-new{ background: linear-gradient(135deg,#14b8a6,#5eead4); }
-.btn-1{ background: linear-gradient(135deg,#22c55e,#86efac); }
-.btn-2{ background: linear-gradient(135deg,#0ea5e9,#7dd3fc); }
-.btn-3{ background: linear-gradient(135deg,#8b5cf6,#c4b5fd); }
-.btn-4{ background: linear-gradient(135deg,#f59e0b,#fde68a); color:#78350f!important; }
-
-/* ================= QUOTE ================= */
-
+/* ===== QUOTE ===== */
 .quote-box{
-    margin-top:45px;
-    padding:30px;
-    background:white;
-    border-radius:26px;
-    max-width:420px;
-    box-shadow:0 15px 30px rgba(0,0,0,.1);
-    border-left:8px solid #22c55e;
+  margin-top:50px;
+  padding:32px;
+  background:linear-gradient(180deg,#ffffff,#f0fdfa);
+  border-radius:30px;
+  box-shadow:0 20px 40px rgba(0,0,0,.08);
+  border-left:6px solid #34d399;
 }
-
-.good-vibes{
-    font-size:18px;
-    font-style:italic;
-    line-height:1.6;
-    margin:0;
+.quote{
+  font-size:18px;font-style:italic;line-height:1.6;margin:0;
 }
-
-a{ text-decoration:none; }
+.small{
+  font-size:14px;font-style:normal;color:#065f46;
+}
 </style>
-
-<!-- Right-side navigation -->
-  <div style="margin-left:auto; display:flex; gap:12px; align-items:center;">
-    <!-- Dashboard button -->
-    <a href="dashboard.html"
-       style="text-decoration:none;padding:8px 12px;border:1px solid #e2e8f0;border-radius:8px;background:#f1f5f9;color:#1f2937;">
-       Dashboard
-    </a>
-
-    
-  </div>
 </head>
 
 <body>
 <center>
 
-<div class="update-alert">
-✨ FOCUS MODE ON • UPDATED FOR 2026 • YOU’VE GOT THIS
+<div class="focus-banner">
+✨ Focus Mode • One Quiz at a Time • You’re Doing Great
 </div>
-
-<div class="update-banner">🌱 STUDY SMART 2026 🌱</div>
-<div class="last-updated">Updated: February 6, 2026</div>
 
 <div class="main-title">
 POP QUIZ HUB
-<div class="subtitle">Calm Mind • Sharp Answers • Winning Results 🏆</div>
+<div class="subtitle">Calm Mind • Clear Answers • Confident You 🌱</div>
 </div>
 
 <div class="quiz-container">
 
-<a href="NFOT 2026 SHAPE 1.html">
-<button class="quiz-button btn-new new">
-<span class="badge-new">NEW</span>
-<span class="badge-update">FOCUS</span>
-🧠 NFOT SHAPE 1
-</button>
-</a>
+<!-- NFOT Core 9 -->
+<a href="NFOT 2026 SHAPE 1.html"><button class="quiz-button btn-a">🧠 SHAPE 1</button></a>
+<a href="NFOT 2026 NMS and YAFS.html"><button class="quiz-button btn-b">📊 NMS & YAFS</button></a>
+<a href="NFOT 2026 Handbook.html"><button class="quiz-button btn-c">📘 Handbook</button></a>
+<a href="NFOT 2026 Ageing.html"><button class="quiz-button btn-d">🩺 Ageing & Health</button></a>
+<a href="NFOT 2026 NDHS 2022.html"><button class="quiz-button btn-a">📈 2022 NDHS</button></a>
+<a href="NFOT 2026 PopDev Integration, PPD POA.html"><button class="quiz-button btn-b">🌍 PopDev & PPD POA</button></a>
+<a href="NFOT 2026 Parent Teen, etc.html"><button class="quiz-button btn-c">👨‍👩‍👧 Parent-Teen & More</button></a>
+<a href="NFOT 2026 Combi 1.html"><button class="quiz-button btn-d">🌍 Combi 1</button></a>
+<a href="NFOT 2026 Combi 2.html"><button class="quiz-button btn-a">🌍 Combi 2</button></a>
 
-<a href="NFOT 2026 NMS and YAFS.html">
-<button class="quiz-button btn-new new">
-<span class="badge-new">NEW</span>
-<span class="badge-update">BOOST</span>
-📊 NMS & YAFS
-</button>
-</a>
+<hr style="margin:30px 0;border:none;height:2px;background:linear-gradient(to right,transparent,#99f6e4,transparent);">
 
-<a href="NFOT 2026 Handbook.html">
-<button class="quiz-button btn-new new">
-<span class="badge-new">NEW</span>
-📘 Demographic Concepts
-</button>
-</a>
-
-<a href="NFOT 2026 Ageing.html">
-<button class="quiz-button btn-new new">
-<span class="badge-new">NEW</span>
-🩺 Ageing & Health
-</button>
-</a>
-
-<a href="NFOT 2026 NDHS 2022.html">
-<button class="quiz-button btn-new new">
-<span class="badge-new">NEW</span>
-📈 2022 NDHS
-</button>
-</a>
-
-<a href="NFOT 2026 PopDev Integration, PPD POA.html">
-<button class="quiz-button btn-new new">
-<span class="badge-new">NEW</span>
-🌍 PopDev & PPD POA
-</button>
-</a>
-
-<a href="NFOT 2026 Parent Teen, etc.html">
-<button class="quiz-button btn-new new">
-<span class="badge-new">NEW</span>
-🌍 Parent-Teen etc
-</button>
-</a>
-
-<a href="NFOT 2026 Combi 1.html">
-<button class="quiz-button btn-new new">
-<span class="badge-new">NEW</span>
-🌍 Combi 1
-</button>
-</a>
-
-<hr style="margin:35px 0; border:none; height:2px; background:linear-gradient(to right,transparent,#99f6e4,transparent);">
-
-<a href="Final Round 1.html">
-<button class="quiz-button btn-1">🎯 Train with Purpose</button>
-</a>
-
-<a href="School Level 2 Pop Quiz 2026 - 1.html">
-<button class="quiz-button btn-2">⚡ Build Accuracy</button>
-</a>
-
-<a href="School Level Pop Quiz 2026 - 1.html">
-<button class="quiz-button btn-3">🚀 Gain Confidence</button>
-</a>
-
-<a href="School Level Pop Quiz 2026 - 2.html">
-<button class="quiz-button btn-4">🏆 Claim the Win</button>
-</a>
+<!-- School-Level / Final Round -->
+<a href="Final Round 1.html"><button class="quiz-button btn-b">🎯 Final Round 1</button></a>
+<a href="School Level 2 Pop Quiz 2026 - 1.html"><button class="quiz-button btn-c">⚡ School Level 2 Quiz</button></a>
+<a href="School Level Pop Quiz 2026 - 1.html"><button class="quiz-button btn-d">🚀 School Level 1 Quiz</button></a>
+<a href="dashboard.html"><button class="quiz-button btn-a">📊 View Progress Dashboard</button></a>
 
 </div>
 
 <div class="quote-box">
-<p class="good-vibes">
-“Hindi ka minamadali —<br>
-<b>PINAGHAHANDA KA.</b>” 🌱✨<br><br>
-<span style="font-size:14px; font-style:normal; color:#065f46;">
+<p class="quote">
+“Hindi ka minamadali —<br><b>PINAGHAHANDA KA.</b>” 🌱✨<br><br>
+<span class="small">
 Kalmado ang isip. Klaro ang sagot.<br>
 <b>Panalo ang mindset. 🥇</b>
 </span>
 </p>
 </div>
-
-<script>
-    // Simple localStorage progress tracking (offline-capable)
-    const ids = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
-    function pct(level){
-      const range = level===1?ids.slice(0,3):level===2?ids.slice(3,6):ids.slice(6,9);
-      const done = range.filter(id=>localStorage.getItem('done_'+id)==='1').length;
-      return Math.round(done/range.length*100);
-    }
-    function paint(){
-      document.getElementById('bar1').style.width = pct(1)+'%';
-      document.getElementById('bar2').style.width = pct(2)+'%';
-      document.getElementById('bar3').style.width = pct(3)+'%';
-    }
-    function start(url,id){
-      // Request fullscreen (optional) to help focus
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
-      }
-      const t = 20*60; // default 20 minutes
-      localStorage.setItem('timer_'+id, t);
-      window.location.href = url;
-    }
-    function preview(url){
-      window.open(url,'_blank');
-    }
-    paint();
-  </script>
 
 </center>
 </body>

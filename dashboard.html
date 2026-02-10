@@ -1,136 +1,113 @@
 <!DOCTYPE html>
 <html lang="fil">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>NFOT Progress Dashboard</title>
-  <link rel="manifest" href="manifest.json">
-  <style>
-    :root{
-      --bg:#f8fafc; --surface:#ffffff; --border:#e2e8f0; --text:#0f172a; --muted:#475569;
-      --lv1:#22c55e; --lv2:#f59e0b; --lv3:#6366f1;
-    }
-    body{margin:0;background:var(--bg);color:var(--text);font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, Arial}
-    header{padding:12px 16px;display:flex;justify-content:space-between;align-items:center;background:#ffffff;border-bottom:1px solid var(--border);position:sticky;top:0}
-    h1{font-size:20px;margin:0}
-    .container{max-width:960px;margin:0 auto;padding:16px}
-    .grid{display:grid;grid-template-columns:1fr;gap:12px}
-    @media(min-width:800px){.grid{grid-template-columns:repeat(3,1fr)}}
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:12px}
-    .card h2{margin:0 0 8px;font-size:16px}
-    .list{display:grid;grid-template-columns:1fr;gap:8px}
-    .row{display:flex;align-items:center;justify-content:space-between;background:#fff;border:1px solid var(--border);border-radius:10px;padding:8px}
-    .badge{border-radius:999px;padding:4px 8px;font-size:12px;color:#fff}
-    .done{background:linear-gradient(90deg,#86efac,#22c55e)}
-    .todo{background:#cbd5e1;color:#0f172a}
-    .warn{background:linear-gradient(90deg,#fde68a,#f59e0b);color:#0f172a}
-    .tip{margin:10px 0;padding:10px;border:1px dashed var(--border);background:#fff;border-radius:10px;color:var(--muted);font-size:13px}
-    .footer{margin-top:12px;color:var(--muted);font-size:12px}
-	
- .score-bad {
-    color: #b91c1c;             /* strong red */
-    font-weight: 700;
-    margin-left: 4px;}
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>NFOT Progress Dashboard</title>
 
-  </style>
+<style>
+:root{
+  --bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;
+  --text:#0f172a;--muted:#475569;
+  --ok:#22c55e;--warn:#f59e0b;
+}
+body{
+  margin:0;background:var(--bg);color:var(--text);
+  font-family:'Segoe UI',Roboto,Arial
+}
+header{
+  background:#fff;border-bottom:1px solid var(--border);
+  padding:14px 18px;display:flex;
+  justify-content:space-between;align-items:center;
+}
+h1{margin:0;font-size:20px}
+a{text-decoration:none;color:#0ea5e9;font-weight:600}
+.container{max-width:960px;margin:auto;padding:18px}
+.card{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:16px;padding:14px;margin-bottom:14px;
+}
+.row{
+  display:flex;justify-content:space-between;gap:12px;
+  padding:10px;border-radius:12px;
+  border:1px solid var(--border);margin-top:8px;
+}
+.badge{
+  padding:6px 12px;border-radius:999px;
+  font-size:12px;font-weight:700;color:white;
+}
+.done{background:linear-gradient(90deg,#86efac,#22c55e)}
+.todo{background:#cbd5e1;color:#0f172a}
+.history{font-size:12px;color:var(--muted);margin-top:4px}
+.footer{margin-top:12px;color:var(--muted);font-size:12px;text-align:center}
+</style>
 </head>
+
 <body>
-  <header>
-    <h1>NFOT — Progress Dashboard</h1>
-    <nav>
-      <a href="index.html">← Back to Index</a>
-    </nav>
-  </header>
-  <main class="container">
-    <div class="tip">
-      <strong>Status:</strong> <span id="net"></span> • <span id="pwa"></span>
-    </div>
-    <div class="grid">
-      <section class="card" style="border-top:4px solid var(--lv1)">
-        <h2>Level 1</h2>
-        <div class="list" id="lv1"></div>
-      </section>
-      <section class="card" style="border-top:4px solid var(--lv2)">
-        <h2>Level 2</h2>
-        <div class="list" id="lv2"></div>
-      </section>
-      <section class="card" style="border-top:4px solid var(--lv3)">
-        <h2>Level 3</h2>
-        <div class="list" id="lv3"></div>
-      </section>
-    </div>
-    <section class="footer">
-      Works offline • Progress is stored on this device only. For teacher view, sync via LMS when online.
-    </section>
-  </main>
-  <script>
-    const ids = ['s1','s2','s3','s4','s5','s6','s7','s8','s9'];
-    const names = {
-      s1:'SHAPE',
-      s2:'NMS, YAFS',
-      s3:'Handbook',
-      s4:'Ageing',
-      s5:'NDHS',
-      s6:'PopDev',
-      s7:'Parent Teen',
-      s8:'Combi 1',
-      s9:'Session 9 - Mastery Check (Capstone)'
-    };
-   
+<header>
+<h1>📊 NFOT Progress Dashboard</h1>
+<a href="index.html">← Back</a>
+</header>
 
-function row(id){
-    const done      = localStorage.getItem('done_'+id)==='1';
-    const switches  = Number(localStorage.getItem('switch_'+id)||0);
-    const time      = Number(localStorage.getItem('time_'+id)||0);      // seconds
-    const score     = Number(localStorage.getItem('score_'+id)||0);     // raw score
-    const scoreMax  = Number(localStorage.getItem('scoreMax_'+id)||0);  // max score
+<main class="container" id="list"></main>
 
-    const THRESHOLD = 90;
-    const mm = Math.floor(time/60), ss = String(time%60).padStart(2,'0');
+<section class="footer">
+Works offline • Progress is stored on this device only.
+</section>
 
-    // Badge label
-    const statusLabel = done ? 'Completed' : 'Not completed';
+<script>
+// ===== 13 quizzes =====
+const quizzes=[
+{id:'s1',name:'SHAPE 1'},
+{id:'s2',name:'NMS & YAFS'},
+{id:'s3',name:'Handbook'},
+{id:'s4',name:'Ageing & Health'},
+{id:'s5',name:'2022 NDHS'},
+{id:'s6',name:'PopDev & PPD POA'},
+{id:'s7',name:'Parent-Teen & More'},
+{id:'s8',name:'Combi 1'},
+{id:'s9',name:'Combi 2'},
+{id:'s10',name:'Final Round 1'},
+{id:'s11',name:'School Level 2 Quiz'},
+{id:'s12',name:'School Level 1 Quiz'},
+{id:'s13',name:'Extra Practice'}
+];
 
-    // If Not completed and we have a score, show "score x/y < 32" in red
-    const needsRedScore = (!done && scoreMax > 0 && score < THRESHOLD);
-    const redScoreHTML  = needsRedScore
-      ? ` <span class="score-bad">— score ${score}/${scoreMax} &lt; ${THRESHOLD}</span>`
-      : '';
+// ===== RENDER =====
+function render(){
+  const wrap=document.getElementById('list');
+  wrap.innerHTML='';
 
-    // Row container
-    const wrap = document.createElement('div');
-    wrap.className = 'row';
+  quizzes.forEach(q=>{
+    const score=Number(localStorage.getItem('score_'+q.id)||0);
+    const max=Number(localStorage.getItem('scoreMax_'+q.id)||0);
+    const done=localStorage.getItem('done_'+q.id)==='1';
+    const history=JSON.parse(localStorage.getItem('history_'+q.id)||'[]');
 
-    // Left area: title + details
-    const detailsLine = scoreMax
-      ? `Score: ${score}/${scoreMax}`
-      : `Score: —`;
+    const last=history.length
+      ? `Last attempt: ${history.at(-1).score}/${history.at(-1).max} • ${history.at(-1).date}`
+      : 'No attempts yet';
 
-    wrap.innerHTML =
-      `<div>
-         <div><strong>${names[id]}</strong></div>
-         <div style="font-size:12px;color:#475569">
-           Tab switches: ${switches} • Time on task: ${mm}:${ss} • ${detailsLine}
-         </div>
-       </div>
-       <div class="badge ${done ? 'done' : 'todo'}">${statusLabel}${redScoreHTML}</div>`;
+    const row=document.createElement('div');
+    row.className='card';
+    row.innerHTML=`
+      <div class="row">
+        <div>
+          <strong>${q.name}</strong><br>
+          <span style="font-size:13px">
+            Score: ${score?score+'/'+max:'—'}
+          </span>
+          <div class="history">${last}</div>
+        </div>
+        <div class="badge ${done?'done':'todo'}">
+          ${done?'Completed':'Not completed'}
+        </div>
+      </div>`;
+    wrap.appendChild(row);
+  });
+}
 
-    return wrap;
-
-
-    }
-    function mount(){
-      const lv1 = document.getElementById('lv1');
-      const lv2 = document.getElementById('lv2');
-      const lv3 = document.getElementById('lv3');
-      [row('s1'),row('s2'),row('s3')].forEach(r=>lv1.appendChild(r));
-      [row('s4'),row('s5'),row('s6')].forEach(r=>lv2.appendChild(r));
-      [row('s7'),row('s8'),row('s9')].forEach(r=>lv3.appendChild(r));
-      document.getElementById('net').textContent = navigator.onLine? 'Offline-ready (online now)': 'Offline';
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
-      document.getElementById('pwa').textContent = isStandalone? 'Installed as App' : 'Running in Browser';
-    }
-    mount();
-  </script>
+render();
+</script>
 </body>
 </html>
