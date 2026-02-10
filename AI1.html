@@ -2,141 +2,192 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Demographic Concepts Contest Reviewer</title>
+    <title>Demographic Concepts - 100 Unique Items</title>
     <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #eef2f3; padding: 20px; color: #333; }
-        .container { max-width: 900px; margin: auto; background: white; padding: 40px; border-radius: 15px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        h1 { color: #0056b3; text-align: center; border-bottom: 2px solid #0056b3; padding-bottom: 10px; }
-        .question-block { margin-bottom: 25px; padding: 15px; border-left: 5px solid #3498db; background: #f9f9f9; }
+        body { font-family: 'Arial', sans-serif; background-color: #f0f2f5; padding: 20px; }
+        .container { max-width: 900px; margin: auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        h1 { color: #1a5276; text-align: center; border-bottom: 2px solid #1a5276; padding-bottom: 10px; }
+        .section-title { background: #1a5276; color: white; padding: 10px; margin-top: 30px; border-radius: 5px; }
+        .q-block { margin-bottom: 20px; padding: 15px; border-bottom: 1px solid #eee; }
         .options { list-style: none; padding: 0; }
         .options li { margin: 8px 0; }
-        button { background-color: #27ae60; color: white; padding: 15px 30px; border: none; border-radius: 5px; cursor: pointer; font-size: 18px; width: 100%; transition: 0.3s; }
-        button:hover { background-color: #219150; }
-        #results { margin-top: 30px; padding: 20px; display: none; border-radius: 10px; text-align: center; font-size: 22px; }
-        .correct-ans { color: #27ae60; font-weight: bold; }
-        .wrong-ans { color: #e74c3c; font-weight: bold; }
+        button { background: #28b463; color: white; padding: 15px; border: none; border-radius: 8px; cursor: pointer; font-size: 18px; width: 100%; font-weight: bold; }
+        #result-box { display: none; margin-top: 25px; padding: 20px; text-align: center; font-size: 22px; border-radius: 10px; }
+        .wrong { color: #cb4335; font-size: 0.9em; font-weight: bold; display: none; }
     </style>
 </head>
 <body>
 
 <div class="container">
     <h1>Handbook on Basic Demographic Concepts Reviewer</h1>
-    <p style="text-align: center;"><em>Note: Questions are randomized per session. Correct answers follow the 2019 POPCOM Bluebook.</em></p>
-    <hr>
-    <div id="quiz-area"></div>
-    <button onclick="calculateScore()">Submit Answers</button>
-    <div id="results"></div>
+    
+    <div class="section-title">PART I: 50 Multiple Choice Items</div>
+    <div id="mc-area"></div>
+
+    <div class="section-title">PART II: 50 True or False Items</div>
+    <div id="tf-area"></div>
+
+    <button onclick="calculateScore()">Submit and Show Score</button>
+    <div id="result-box"></div>
 </div>
 
 <script>
-const rawBank = [
-    // FERTILITY
-    { q: "What is the frequency of births in a population?", a: "Fertility", o: ["Fecundity", "Fertility", "Morbidity", "Natality"] },
-    { q: "The Crude Birth Rate (CBR) is calculated by dividing the total number of live births by what?", a: "Total mid-year population", o: ["Total mid-year population", "Number of women 15-49", "Total deaths", "Number of married couples"] },
-    { q: "General Fertility Rate (GFR) is more specific than CBR because it limits the denominator to women of childbearing age.", a: "True", o: ["True", "False"] },
-    { q: "What is the age range usually used for the 'childbearing years' in GFR?", a: "15-49 years", o: ["15-44 years", "18-45 years", "15-49 years", "10-49 years"] },
-    { q: "The average number of children that would be born to a woman during her lifetime if she were to pass through her childbearing years.", a: "Total Fertility Rate", o: ["Crude Birth Rate", "Age-Specific Fertility Rate", "Total Fertility Rate", "Replacement Level"] },
-    
-    // MORTALITY
-    { q: "What refers to the frequency of deaths in a population?", a: "Mortality", o: ["Morbidity", "Mortality", "Migration", "Fetal Death"] },
-    { q: "The number of deaths per 1,000 mid-year population.", a: "Crude Death Rate", o: ["Age-Specific Death Rate", "Infant Mortality Rate", "Crude Death Rate", "Case Fatality Rate"] },
-    { q: "Infant Mortality Rate measures the number of deaths of infants under what age?", a: "Under 1 year", o: ["Under 5 years", "Under 1 month", "Under 1 year", "Under 28 days"] },
-    { q: "Neonatal Mortality Rate covers deaths occurring within 28 days after birth.", a: "True", o: ["True", "False"] },
-    { q: "Maternal Mortality Ratio is the number of women who die as a result of complications of pregnancy or childbearing per 100,000 live births.", a: "True", o: ["True", "False"] },
-    
-    // MIGRATION
-    { q: "The movement of people across a specific boundary for the purpose of establishing a new residence.", a: "Migration", o: ["Commuting", "Tourism", "Migration", "Circulation"] },
-    { q: "What is the term for people entering a sub-national boundary (e.g., a province or city)?", a: "In-migration", o: ["Immigration", "Emigration", "In-migration", "Out-migration"] },
-    { q: "International migration involves moving across an international boundary.", a: "True", o: ["True", "False"] },
-    { q: "The difference between the number of in-migrants and the number of out-migrants.", a: "Net Migration", o: ["Gross Migration", "Net Migration", "Migration Volume", "Net Natural Increase"] },
-
-    // DEMOGRAPHIC TOOLS
-    { q: "An absolute number of a demographic event occurring in a specified area in a specified time.", a: "Count", o: ["Count", "Ratio", "Rate", "Proportion"] },
-    { q: "The relation of one population subgroup to the entire population.", a: "Proportion", o: ["Ratio", "Proportion", "Constant", "Rate"] },
-    { q: "What constant is usually used when calculating Crude Birth Rate?", a: "1,000", o: ["100", "1,000", "10,000", "100,000"] },
-    { q: "A ratio is a single number that expresses the relative size of two numbers.", a: "True", o: ["True", "False"] },
-
-    // POPULATION COMPOSITION
-    { q: "The 'Sex Ratio' is calculated as the number of females per 100 males.", a: "False", o: ["True", "False"] },
-    { q: "Which tool displays the age-sex structure of a population?", a: "Population Pyramid", o: ["Scatter Plot", "Population Pyramid", "Line Graph", "Life Table"] },
-    { q: "A pyramid with a wide base indicates a young population with high fertility.", a: "True", o: ["True", "False"] },
-    { q: "The age that divides a population into two numerically equal groups.", a: "Median Age", o: ["Mean Age", "Modal Age", "Median Age", "Dependency Age"] },
-    { q: "Dependency Ratio is the ratio of persons in the 'dependent' ages (under 15 and over 64) to those in the 'economically productive' ages.", a: "True", o: ["True", "False"] },
-    
-    // GROWTH & TRANSITION
-    { q: "Rate of Natural Increase is the difference between CBR and CDR.", a: "True", o: ["True", "False"] },
-    { q: "Stage 2 of the Demographic Transition is characterized by falling death rates and high birth rates.", a: "True", o: ["True", "False"] },
-    { q: "Population Density is the number of people per unit of land area.", a: "True", o: ["True", "False"] }
+const mcQuestions = [
+    { q: "What is the study of the size, territorial distribution, and composition of population?", a: "Demography", o: ["Anthropology", "Demography", "Geography", "Sociology"] },
+    { q: "Which demographic tool is a single number that expresses the relative size of two numbers?", a: "Ratio", o: ["Count", "Rate", "Ratio", "Proportion"] },
+    { q: "The relation of a population subgroup to the entire population is called:", a: "Proportion", o: ["Ratio", "Proportion", "Constant", "Rate"] },
+    { q: "What is the constant (k) usually used in calculating Crude Birth Rate?", a: "1,000", o: ["100", "1,000", "10,000", "100,000"] },
+    { q: "It refers to the frequency of births in a population.", a: "Fertility", o: ["Fecundity", "Fertility", "Natality", "Morbidity"] },
+    { q: "Which rate is the most basic and most commonly used for fertility?", a: "Crude Birth Rate", o: ["General Fertility Rate", "Crude Birth Rate", "Total Fertility Rate", "ASFR"] },
+    { q: "The denominator for GFR is the number of women aged:", a: "15-49", o: ["15-44", "18-49", "15-49", "10-49"] },
+    { q: "Which rate measures the number of live births per 1,000 women in a specific age group?", a: "Age-Specific Fertility Rate", o: ["ASFR", "TFR", "CBR", "GFR"] },
+    { q: "It is the average number of children that would be born to a woman during her lifetime.", a: "Total Fertility Rate", o: ["CBR", "TFR", "ASFR", "GFR"] },
+    { q: "The frequency of deaths in a population is called:", a: "Mortality", o: ["Morbidity", "Mortality", "Migration", "Fetal Death"] },
+    { q: "Which rate uses the total mid-year population as the denominator for deaths?", a: "Crude Death Rate", o: ["CDR", "ASDR", "IMR", "MMR"] },
+    { q: "Infant Mortality Rate measures deaths of infants under age:", a: "1 year", o: ["1 month", "1 year", "5 years", "28 days"] },
+    { q: "The constant (k) for Maternal Mortality Ratio is:", a: "100,000", o: ["1,000", "10,000", "100,000", "1,000,000"] },
+    { q: "Which death rate measures deaths among children aged 1-4 years?", a: "Child Mortality Rate", o: ["IMR", "Neonatal Rate", "Child Mortality Rate", "ASDR"] },
+    { q: "Movement of people across a specific boundary to establish a new residence is:", a: "Migration", o: ["Commuting", "Tourism", "Migration", "Circulation"] },
+    { q: "Movement into a sub-national boundary (province/city) is called:", a: "In-migration", o: ["In-migration", "Immigration", "Out-migration", "Emigration"] },
+    { q: "The difference between in-migrants and out-migrants is:", a: "Net Migration", o: ["Gross Migration", "Net Migration", "Migration Volume", "Natural Increase"] },
+    { q: "Which tool shows the age and sex structure of a population?", a: "Population Pyramid", o: ["Bar Graph", "Population Pyramid", "Pie Chart", "Line Graph"] },
+    { q: "The age that divides the population into two equal groups is:", a: "Median Age", o: ["Mean Age", "Median Age", "Mode Age", "Dependency Age"] },
+    { q: "The ratio of persons in dependent ages to those in economically productive ages is:", a: "Dependency Ratio", o: ["Sex Ratio", "Dependency Ratio", "Child-Woman Ratio", "Growth Rate"] },
+    { q: "The number of people per unit of land area is:", a: "Population Density", o: ["Population Density", "Growth Rate", "Migration Stream", "CBR"] },
+    { q: "Stage 1 of Demographic Transition is characterized by:", a: "High Birth and High Death rates", o: ["Low Birth and High Death", "High Birth and High Death rates", "Low Birth and Low Death", "High Birth and Low Death"] },
+    { q: "Replacement level fertility is usually a TFR of:", a: "2.1", o: ["1.0", "2.1", "3.0", "5.0"] },
+    { q: "CBR minus CDR equals:", a: "Rate of Natural Increase", o: ["Growth Rate", "Net Migration", "Rate of Natural Increase", "TFR"] },
+    { q: "What is the mid-point of a calendar year used in demographic denominators?", a: "July 1", o: ["January 1", "June 30", "July 1", "December 31"] },
+    { q: "A 'Count' is an absolute number of a demographic event.", a: "Count", o: ["Count", "Rate", "Ratio", "Proportion"] },
+    { q: "Neonatal Mortality covers deaths within how many days of birth?", a: "28 days", o: ["7 days", "14 days", "28 days", "60 days"] },
+    { q: "What is the numerator of Maternal Mortality Ratio?", a: "Maternal deaths", o: ["Total deaths", "Maternal deaths", "Infant deaths", "Live births"] },
+    { q: "The 'sex ratio' formula is:", a: "(Males / Females) x 100", o: ["(Females / Males) x 100", "(Males / Females) x 100", "(Males / Total) x 100", "None"] },
+    { q: "What refers to the physical capacity to conceive?", a: "Fecundity", o: ["Fertility", "Fecundity", "Morbidity", "Natality"] },
+    { q: "Migration within a country is:", a: "Internal Migration", o: ["Internal Migration", "International Migration", "Emigration", "Immigration"] },
+    { q: "Which region had the lowest population size in the 2015 Census?", a: "CAR", o: ["NCR", "ARMM", "CAR", "CARAGA"] },
+    { q: "Stage 4 of Demographic Transition is characterized by:", a: "Low Birth and Low Death rates", o: ["High Birth and Low Death", "Low Birth and Low Death rates", "High Birth and High Death", "None"] },
+    { q: "Total mid-year population is usually used to estimate the population at:", a: "Risk", o: ["Risk", "Rest", "Growth", "Census"] },
+    { q: "ASDR stands for:", a: "Age-Specific Death Rate", o: ["Annual Specific Death Rate", "Age-Specific Death Rate", "Average Standard Death Rate", "None"] },
+    { q: "Population growth includes natural increase and:", a: "Net Migration", o: ["Fertility", "Mortality", "Net Migration", "Sex Ratio"] },
+    { q: "A wide base in a population pyramid indicates:", a: "High fertility", o: ["Low fertility", "High fertility", "High elderly population", "Negative growth"] },
+    { q: "Fetal death is also known as:", a: "Stillbirth", o: ["Neonatal death", "Infant death", "Stillbirth", "Maternal death"] },
+    { q: "What is the term for a group of people sharing a common temporal demographic experience?", a: "Cohort", o: ["Sample", "Cohort", "Density", "Ratio"] },
+    { q: "Life expectancy at birth is usually higher for:", a: "Females", o: ["Males", "Females", "Both equal", "Infants"] },
+    { q: "The number of live births per 1,000 population is:", a: "CBR", o: ["CBR", "GFR", "ASFR", "TFR"] },
+    { q: "Which tool relates a part to the whole?", a: "Proportion", o: ["Ratio", "Rate", "Proportion", "Count"] },
+    { q: "Under-five mortality rate measures deaths before age:", a: "5", o: ["1", "5", "15", "28"] },
+    { q: "Emigration refers to:", a: "Leaving a country", o: ["Entering a country", "Leaving a country", "Internal movement", "None"] },
+    { q: "Post-neonatal mortality occurs between:", a: "28 days to 1 year", o: ["0 to 28 days", "28 days to 1 year", "1 to 5 years", "None"] },
+    { q: "The dependency age group for 'old' is:", a: "65 and over", o: ["50 and over", "60 and over", "65 and over", "70 and over"] },
+    { q: "The dependency age group for 'young' is:", a: "Under 15", o: ["Under 5", "Under 15", "Under 18", "Under 21"] },
+    { q: "Productive age group is:", a: "15-64", o: ["15-49", "18-60", "15-64", "20-65"] },
+    { q: "Which stage of demographic transition has falling birth rates?", a: "Stage 3", o: ["Stage 1", "Stage 2", "Stage 3", "Stage 4"] },
+    { q: "The science of population is:", a: "Demography", o: ["Sociology", "Demography", "Economics", "History"] }
 ];
 
-// Filler logic to reach exactly 100 items for the reviewer by cycling/modifying the bank
-const finalQuestions = [];
-while (finalQuestions.length < 100) {
-    rawBank.forEach(item => {
-        if (finalQuestions.length < 100) {
-            finalQuestions.push({...item});
-        }
-    });
-}
+const tfQuestions = [
+    { q: "Demography includes the study of territorial distribution of population.", a: "True" },
+    { q: "A rate measures the occurrence of an event in a population during a given period.", a: "True" },
+    { q: "The constant 'k' is always 100.", a: "False" },
+    { q: "Fertility refers to the actual reproductive performance of a population.", a: "True" },
+    { q: "Crude Birth Rate is the most refined measure of fertility.", a: "False" },
+    { q: "General Fertility Rate uses the total mid-year population as its denominator.", a: "False" },
+    { q: "Total Fertility Rate is the sum of Age-Specific Fertility Rates.", a: "True" },
+    { q: "Fecundity is the same as fertility.", a: "False" },
+    { q: "Mortality is the frequency of deaths in a population.", a: "True" },
+    { q: "Crude Death Rate is also known as the general death rate.", a: "True" },
+    { q: "Infant Mortality Rate includes deaths up to 5 years of age.", a: "False" },
+    { q: "Neonatal mortality occurs within 28 days after birth.", a: "True" },
+    { q: "Maternal Mortality Ratio uses total deaths as its denominator.", a: "False" },
+    { q: "Migration involves a change of residence.", a: "True" },
+    { q: "Immigration is movement out of a country.", a: "False" },
+    { q: "Net migration can be positive, negative, or zero.", a: "True" },
+    { q: "Population composition refers to the age and sex structure.", a: "True" },
+    { q: "The sex ratio is the number of females per 100 males.", a: "False" },
+    { q: "A population pyramid shows the distribution of the population by age and sex.", a: "True" },
+    { q: "The median age divides the population into three equal groups.", a: "False" },
+    { q: "Dependency ratio relates the dependent ages to the working ages.", a: "True" },
+    { q: "Population density is expressed as people per square kilometer of land.", a: "True" },
+    { q: "Natural increase is the difference between births and deaths.", a: "True" },
+    { q: "Stage 2 of Demographic Transition has falling birth rates.", a: "False" },
+    { q: "The mid-year population is the population as of July 1st.", a: "True" },
+    { q: "Stillbirth is another term for fetal death.", a: "True" },
+    { q: "ASFR stands for Age-Standardized Fertility Rate.", a: "False" },
+    { q: "The child-woman ratio is a refined measure of fertility.", a: "False" },
+    { q: "Life expectancy is the average number of years a person is expected to live.", a: "True" },
+    { q: "Death rates can be calculated for specific causes of death.", a: "True" },
+    { q: "Internal migration involves moving across international borders.", a: "False" },
+    { q: "Emigration is moving into a country.", a: "False" },
+    { q: "The base of a population pyramid represents the oldest age group.", a: "False" },
+    { q: "A ratio is a relation of one population subgroup to the whole population.", a: "False" },
+    { q: "A proportion is always a part of the whole.", a: "True" },
+    { q: "Stage 4 of demographic transition has high death rates.", a: "False" },
+    { q: "Growth rate includes natural increase and net migration.", a: "True" },
+    { q: "Replacement fertility allows a population to exactly replace itself.", a: "True" },
+    { q: "Child mortality rate covers ages 1 to 4 years.", a: "True" },
+    { q: "Case fatality rate measures the risk of dying from a specific disease.", a: "True" },
+    { q: "Population tools include counts, rates, ratios, and proportions.", a: "True" },
+    { q: "The Philippines' population density has decreased since 1960.", a: "False" },
+    { q: "The constant for CBR is usually 1,000.", a: "True" },
+    { q: "The denominator for ASFR is women in a specific age group.", a: "True" },
+    { q: "Zero population growth happens when births plus in-migrants equal deaths plus out-migrants.", a: "True" },
+    { q: "The sex ratio for the Philippines is usually around 102 males per 100 females.", a: "True" },
+    { q: "Life expectancy at birth is a summary measure of mortality.", a: "True" },
+    { q: "Migration stream refers to the total number of moves made.", a: "False" },
+    { q: "A young population has a high median age.", a: "False" },
+    { q: "Stage 3 of demographic transition is the 'declining' stage.", a: "True" }
+];
 
-// Shuffle function
-function shuffle(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
-    }
-}
-
-function initQuiz() {
-    shuffle(finalQuestions);
-    const quizArea = document.getElementById('quiz-area');
-    finalQuestions.forEach((item, i) => {
-        const qDiv = document.createElement('div');
-        qDiv.className = 'question-block';
-        qDiv.innerHTML = `<p><strong>${i+1}. ${item.q}</strong></p>`;
-        
-        const optList = document.createElement('ul');
-        optList.className = 'options';
-        
-        // Shuffle options for Multiple Choice
-        if(item.o.length > 2) shuffle(item.o);
-
-        item.o.forEach(opt => {
-            optList.innerHTML += `<li><label><input type="radio" name="q${i}" value="${opt}"> ${opt}</label></li>`;
+function loadQuestions() {
+    const mcArea = document.getElementById('mc-area');
+    mcQuestions.forEach((q, i) => {
+        let html = `<div class="q-block" id="mc-block-${i}"><p><strong>${i+1}. ${q.q}</strong></p><ul class="options">`;
+        q.o.forEach(opt => {
+            html += `<li><input type="radio" name="mc${i}" value="${opt}"> ${opt}</li>`;
         });
-        
-        qDiv.appendChild(optList);
-        qDiv.dataset.answer = item.a;
-        quizArea.appendChild(qDiv);
+        html += `</ul><div class="wrong" id="mc-ans-${i}">Correct Answer: ${q.a}</div></div>`;
+        mcArea.innerHTML += html;
+    });
+
+    const tfArea = document.getElementById('tf-area');
+    tfQuestions.forEach((q, i) => {
+        let html = `<div class="q-block" id="tf-block-${i}"><p><strong>${i+51}. ${q.q}</strong></p><ul class="options">`;
+        ["True", "False"].forEach(opt => {
+            html += `<li><input type="radio" name="tf${i}" value="${opt}"> ${opt}</li>`;
+        });
+        html += `</ul><div class="wrong" id="tf-ans-${i}">Correct Answer: ${q.a}</div></div>`;
+        tfArea.innerHTML += html;
     });
 }
 
 function calculateScore() {
-    const blocks = document.querySelectorAll('.question-block');
     let score = 0;
-    blocks.forEach((block, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        const correct = block.dataset.answer;
-        if (selected && selected.value === correct) {
-            score++;
-            block.style.borderLeft = "5px solid #27ae60";
-        } else {
-            block.style.borderLeft = "5px solid #e74c3c";
-            const info = document.createElement('p');
-            info.className = 'correct-ans';
-            info.innerText = `Correct Answer: ${correct}`;
-            block.appendChild(info);
-        }
+    mcQuestions.forEach((q, i) => {
+        const sel = document.querySelector(`input[name="mc${i}"]:checked`);
+        const block = document.getElementById(`mc-block-${i}`);
+        const ans = document.getElementById(`mc-ans-${i}`);
+        if(sel && sel.value === q.a) { score++; block.style.background = "#d4efdf"; ans.style.display = "none"; }
+        else { block.style.background = "#f9ebea"; ans.style.display = "block"; }
     });
-    
-    const resultDiv = document.getElementById('results');
-    resultDiv.style.display = 'block';
-    resultDiv.style.backgroundColor = score > 75 ? '#d4edda' : '#f8d7da';
-    resultDiv.innerHTML = `<h2>Your Score: ${score} / 100</h2><p>${score > 75 ? "Excellent! You are ready for the contest!" : "Keep studying the handbook!"}</p>`;
-    window.scrollTo(0, document.body.scrollHeight);
+
+    tfQuestions.forEach((q, i) => {
+        const sel = document.querySelector(`input[name="tf${i}"]:checked`);
+        const block = document.getElementById(`tf-block-${i}`);
+        const ans = document.getElementById(`tf-ans-${i}`);
+        if(sel && sel.value === q.a) { score++; block.style.background = "#d4efdf"; ans.style.display = "none"; }
+        else { block.style.background = "#f9ebea"; ans.style.display = "block"; }
+    });
+
+    const resultBox = document.getElementById('result-box');
+    resultBox.style.display = "block";
+    resultBox.style.background = score >= 75 ? "#28b463" : "#cb4335";
+    resultBox.style.color = "white";
+    resultBox.innerHTML = `Your Score: ${score} / 100`;
+    window.scrollTo(0, 0);
 }
 
-initQuiz();
+window.onload = loadQuestions;
 </script>
+
 </body>
 </html>
